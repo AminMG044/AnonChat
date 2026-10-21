@@ -58,7 +58,7 @@
         },
         {
           "name": "Browser layout, clipboard and keyboard checks",
-          "run": "node .review/capture.mjs"
+          "run": "node scripts/review-bulk-capture.mjs"
         },
         {
           "uses": "actions/upload-artifact@v4",
