@@ -110,3 +110,12 @@ describe("ChatMessageBubble Component", () => {
     expect(screen.getByText("Original message was deleted")).toBeDefined();
   });
 });
+
+
+it("keeps selection checkboxes clear of reaction, reply and pin action overlays", () => {
+  render(<ChatMessageBubble message={baseMessage} selectionMode isAdmin onTogglePin={vi.fn()} onReply={vi.fn()} />);
+  expect(screen.queryByRole("button", { name: /React with/ })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Reply to message" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Pin message" })).toBeNull();
+  expect(screen.getByText(baseMessage.text)).toBeDefined();
+});

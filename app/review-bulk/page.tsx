@@ -13,6 +13,6 @@ export default function Review() {
     <h1 className="text-xl font-semibold">Message selection — isolated review fixture</h1>
     <p className="text-sm text-muted-foreground">Synthetic messages and mocked permissions; no live user data or deletion.</p>
     <MessageSelection key="fixture:owner" roomId="10000000-0000-4000-8000-000000000001" userId="owner" messages={messages} visibleMessages={messages}
-      renderMessage={message => <ChatMessageBubble message={message} />} onDeleted={ids => setMessages(previous => previous.filter(message => !ids.includes(message.id)))} />
+      renderMessage={(message, selecting) => <ChatMessageBubble message={message} selectionMode={selecting} />} onDeleted={ids => setMessages(previous => previous.filter(message => !ids.includes(message.id)))} />
   </main>;
 }

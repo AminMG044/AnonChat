@@ -10,7 +10,7 @@ type Props = {
   userId: string | null;
   messages: ChatMessage[];
   visibleMessages: ChatMessage[];
-  renderMessage: (message: ChatMessage) => React.ReactNode;
+  renderMessage: (message: ChatMessage, selecting: boolean) => React.ReactNode;
   onDeleted: (ids: string[]) => void;
 };
 
@@ -136,7 +136,7 @@ export function MessageSelection({ roomId, userId, messages, visibleMessages, re
           onChange={() => { setIds(previous => { const next = new Set(previous); if (next.has(message.id)) next.delete(message.id); else next.add(message.id); return next; }); setError(""); setFeedback(""); }} />
         Select message from {message.author === "me" ? "you" : message.senderName || "another member"} at {message.time}
       </label>}
-      {renderMessage(message)}
+      {renderMessage(message, selecting)}
     </div>)}
   </div>;
 }

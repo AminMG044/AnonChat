@@ -1286,7 +1286,8 @@ function ChatPageInner() {
                               setChats(previous => previous.map(chat => chat.id === roomId ? { ...chat, lastMessage: preview.lastMessage, lastSeen: preview.lastSeen } : chat));
                             });
                           }}
-                          renderMessage={(message) => <ChatMessageBubble
+                          renderMessage={(message, selecting) => <ChatMessageBubble
+                            selectionMode={selecting}
                             message={message}
                             searchQuery={messageSearchQuery}
                             isPinned={pinnedIds.includes(message.id)}

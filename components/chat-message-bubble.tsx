@@ -40,6 +40,7 @@ interface ChatMessageBubbleProps {
   onReact?: (messageId: string, emoji: string) => void;
   onReply?: (message: ChatMessage) => void;
   onJumpToMessage?: (messageId: string) => void;
+  selectionMode?: boolean;
 }
 
 // A lightweight set of emojis for quick reactions
@@ -56,6 +57,7 @@ export function ChatMessageBubble({
   onReact,
   onReply,
   onJumpToMessage,
+  selectionMode = false,
 }: ChatMessageBubbleProps) {
   const isMe = message.author === "me";
   const [showPicker, setShowPicker] = useState(false);
@@ -74,8 +76,8 @@ export function ChatMessageBubble({
         isMe ? "items-end ml-auto" : "items-start mr-auto"
       )}
     >
-      {/* Message Actions (Hover / Focus effect) */}
-      <div
+      {/* Keep hover actions from covering selection controls. */}
+      {!selectionMode && <div
         className={cn(
           "absolute -top-10 z-10 flex items-center gap-1 p-1 bg-popover border border-border rounded-full shadow-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200",
           isMe ? "right-2" : "left-2"
@@ -107,7 +109,7 @@ export function ChatMessageBubble({
             </button>
           </>
         )}
-      </div>
+      </div>}
 
       {/* Message Bubble */}
       <div
@@ -174,7 +176,7 @@ export function ChatMessageBubble({
           {highlightText(message.text, searchQuery)}
         </p>
 
-        {isAdmin && onTogglePin && (
+        {!selectionMode && isAdmin && onTogglePin && (
           <button
             type="button"
             onClick={() => onTogglePin(message.id)}
@@ -198,6 +200,7 @@ export function ChatMessageBubble({
             return (
               <button
                 key={reaction.emoji}
+                disabled={selectionMode}
                 onClick={() => handleEmojiClick(reaction.emoji)}
                 className={cn(
                   "flex items-center gap-1 text-xs rounded-full px-2 py-0.5 border transition-colors",
