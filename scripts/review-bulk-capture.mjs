@@ -23,7 +23,7 @@ try {
     if(!dialog||dialog.x<0||dialog.x+dialog.width>width+1)throw Error('Dialog overflow');
     await page.screenshot({path:`screenshots/${device}-confirm.png`,fullPage:true});
     await page.getByRole('button',{name:'Keep messages',exact:true}).click();
-    if(!await page.getByRole('button',{name:'Delete selected',exact:true}).evaluate(el=>el===document.activeElement))throw Error('Confirmation focus not restored');
+    await page.waitForFunction(()=>document.activeElement?.textContent==='Delete selected', { timeout: 5000 });
     await boxes.nth(1).check();
     if(!await page.getByRole('button',{name:'Delete selected',exact:true}).isDisabled())throw Error('Other owner deletion allowed');
     await page.screenshot({path:`screenshots/${device}-mixed-selection.png`,fullPage:true});
