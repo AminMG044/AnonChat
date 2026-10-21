@@ -25,6 +25,8 @@ export type ChatMessage = {
   reactions?: Reaction[];
   replyTo?: ReplyToInfo | null;
   senderName?: string;
+  /** Authenticated database owner; display author is not an authorization claim. */
+  senderId?: string;
 };
 
 interface ChatMessageBubbleProps {

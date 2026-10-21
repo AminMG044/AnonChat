@@ -25,6 +25,7 @@ import MemberPanel from "@/components/MemberPanel";
 import { MessageSearchBar } from "@/components/message-search-bar";
 import { GroupVerificationBadge } from "@/components/GroupVerificationBadge";
 import { ChatMessageBubble, type ChatMessage } from "@/components/chat-message-bubble";
+import { MessageSelection } from "@/components/message-selection";
 import { cn } from "@/lib/utils";
 import { highlightText } from "@/lib/highlight-text";
 import { handleAppError } from "@/lib/error-handler"; // Integrated Error Handler
@@ -320,6 +321,7 @@ function ChatPageInner() {
       return {
         id: message.id,
         author: message.user_id === currentUser?.id ? "me" : "them",
+        senderId: message.user_id,
         text: message.content,
         time: new Date(message.created_at).toLocaleTimeString([], {
           hour: "2-digit",
@@ -1261,10 +1263,31 @@ function ChatPageInner() {
                        )}
 
                      {!isLoadingMessagesByRoom[selectedChatId || ''] &&
-                        filteredMessages.map((message) => (
-                          <ChatMessageBubble 
-                            key={message.id} 
-                            message={message} 
+                        <MessageSelection
+                          key={`${selectedChat.id}:${currentUser?.id ?? "anonymous"}`}
+                          roomId={selectedChat.id}
+                          userId={currentUser?.id ?? null}
+                          messages={messages}
+                          visibleMessages={filteredMessages}
+                          onDeleted={(ids) => {
+                            const deleted = new Set(ids);
+                            const roomId = selectedChat.id;
+                            setMessagesByChat(previous => ({ ...previous, [roomId]: (previous[roomId] ?? [])
+                              .filter(message => !deleted.has(message.id))
+                              .map(message => message.replyTo && deleted.has(message.replyTo.id)
+                                ? { ...message, replyTo: { ...message.replyTo, text: "Original message was deleted", isDeleted: true } } : message) }));
+                            setPinnedIdsByChat(previous => {
+                              const next = (previous[roomId] ?? []).filter(id => !deleted.has(id));
+                              try { localStorage.setItem(`anonchat_pinned_${roomId}`, JSON.stringify(next)); } catch { /* Storage is optional. */ }
+                              return { ...previous, [roomId]: next };
+                            });
+                            setReplyingToMessage(previous => previous && deleted.has(previous.id) ? null : previous);
+                            void fetchRoomLastMessagePreview(roomId).then(preview => {
+                              setChats(previous => previous.map(chat => chat.id === roomId ? { ...chat, lastMessage: preview.lastMessage, lastSeen: preview.lastSeen } : chat));
+                            });
+                          }}
+                          renderMessage={(message) => <ChatMessageBubble
+                            message={message}
                             searchQuery={messageSearchQuery}
                             isPinned={pinnedIds.includes(message.id)}
                             isAdmin={isAdmin}
@@ -1272,8 +1295,8 @@ function ChatPageInner() {
                             isHighlighted={highlightedMessageId === message.id}
                             onReply={handleReplyToMessage}
                             onJumpToMessage={handleScrollToMessage}
-                          />
-                        ))}
+                          />}
+                        />}
                    </div>
 
                   <div className="border-t border-border/70 bg-card/80 backdrop-blur-sm">

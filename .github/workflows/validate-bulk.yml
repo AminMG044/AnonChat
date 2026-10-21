@@ -1,0 +1,58 @@
+{
+  "name": "Validate bulk message actions",
+  "on": {
+    "push": {
+      "branches": [
+        "validate/288-bulk-messages"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://example.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "public-build-placeholder"
+  },
+  "jobs": {
+    "validate": {
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 25,
+      "steps": [
+        {
+          "uses": "actions/checkout@v4"
+        },
+        {
+          "uses": "actions/setup-node@v4",
+          "with": {
+            "node-version": "22",
+            "cache": "npm"
+          }
+        },
+        {
+          "name": "Install without lifecycle scripts",
+          "run": "npm ci --ignore-scripts"
+        },
+        {
+          "name": "Lint",
+          "run": "npm run lint"
+        },
+        {
+          "name": "Types",
+          "if": "always()",
+          "run": "npx tsc --noEmit"
+        },
+        {
+          "name": "Full unit suite",
+          "if": "always()",
+          "run": "npm run test:unit"
+        },
+        {
+          "name": "Build",
+          "if": "always()",
+          "run": "npm run build"
+        }
+      ]
+    }
+  }
+}

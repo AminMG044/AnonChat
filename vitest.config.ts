@@ -5,6 +5,8 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: [
+      "components/message-selection.test.tsx",
+      "tests/message-bulk-api.test.ts",
       "lib/blockchain/group-verification.test.ts",
       "lib/blockchain/transaction-verification.test.ts",
       "lib/blockchain/transaction-receipts.test.ts",
