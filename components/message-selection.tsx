@@ -115,7 +115,7 @@ export function MessageSelection({ roomId, userId, messages, visibleMessages, re
           <AlertDialog.Trigger asChild><button type="button" className="rounded-md border border-destructive px-3 py-2 text-sm text-destructive disabled:opacity-50" disabled={busy || !deletable} aria-describedby={reason ? "delete-selection-reason" : undefined}>Delete selected</button></AlertDialog.Trigger>
           <AlertDialog.Portal>
             <AlertDialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
-            <AlertDialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-background p-5 shadow-xl">
+            <AlertDialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%_-_2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-background p-5 shadow-xl">
               <AlertDialog.Title className="font-semibold">Delete {selected.length} selected messages?</AlertDialog.Title>
               <AlertDialog.Description className="mt-2 text-sm text-muted-foreground">This permanently removes your selected messages for everyone in this conversation. This cannot be undone.</AlertDialog.Description>
               <div className="mt-4 flex flex-wrap justify-end gap-2">

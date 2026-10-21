@@ -51,6 +51,23 @@
           "name": "Build",
           "if": "always()",
           "run": "npm run build"
+        },
+        {
+          "name": "Install browser tools",
+          "run": "npm install --prefix /tmp/browser-tools --ignore-scripts --no-package-lock playwright@1.56.1\n/tmp/browser-tools/node_modules/.bin/playwright install --with-deps chromium"
+        },
+        {
+          "name": "Browser layout, clipboard and keyboard checks",
+          "run": "node .review/capture.mjs"
+        },
+        {
+          "uses": "actions/upload-artifact@v4",
+          "if": "always()",
+          "with": {
+            "name": "bulk-message-screenshots",
+            "path": "screenshots/",
+            "retention-days": 7
+          }
         }
       ]
     }
