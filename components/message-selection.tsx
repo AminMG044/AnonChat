@@ -112,7 +112,7 @@ export function MessageSelection({ roomId, userId, messages, visibleMessages, re
         <button type="button" className="rounded-md border border-border px-3 py-2 text-sm" disabled={busy} onClick={() => void copy()}>{busy ? "Working…" : "Copy selected"}</button>
         <button type="button" className="rounded-md border border-border px-3 py-2 text-sm" disabled={busy} onClick={() => { setIds(new Set()); setError(""); setFeedback("Selection cleared."); }}>Clear selection</button>
         <AlertDialog.Root open={confirming} onOpenChange={setConfirming}>
-          <AlertDialog.Trigger asChild><button type="button" className="rounded-md border border-destructive px-3 py-2 text-sm text-destructive disabled:opacity-50" disabled={busy || !deletable} aria-describedby={reason ? "delete-selection-reason" : undefined}>Delete selected</button></AlertDialog.Trigger>
+          <AlertDialog.Trigger asChild><button type="button" className="rounded-md border border-red-700 px-3 py-2 text-sm text-red-700 dark:border-red-300 dark:text-red-300 disabled:opacity-50" disabled={busy || !deletable} aria-describedby={reason ? "delete-selection-reason" : undefined}>Delete selected</button></AlertDialog.Trigger>
           <AlertDialog.Portal>
             <AlertDialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
             <AlertDialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%_-_2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-background p-5 shadow-xl">
@@ -120,7 +120,7 @@ export function MessageSelection({ roomId, userId, messages, visibleMessages, re
               <AlertDialog.Description className="mt-2 text-sm text-muted-foreground">This permanently removes your selected messages for everyone in this conversation. This cannot be undone.</AlertDialog.Description>
               <div className="mt-4 flex flex-wrap justify-end gap-2">
                 <AlertDialog.Cancel className="rounded-md border border-border px-3 py-2">Keep messages</AlertDialog.Cancel>
-                <AlertDialog.Action className="rounded-md bg-destructive px-3 py-2 text-destructive-foreground" disabled={!deletable} onClick={() => void remove()}>Confirm deletion</AlertDialog.Action>
+                <AlertDialog.Action className="rounded-md bg-red-700 px-3 py-2 text-white dark:bg-red-300 dark:text-gray-950" disabled={!deletable} onClick={() => void remove()}>Confirm deletion</AlertDialog.Action>
               </div>
             </AlertDialog.Content>
           </AlertDialog.Portal>
@@ -128,7 +128,7 @@ export function MessageSelection({ roomId, userId, messages, visibleMessages, re
         {reason && <p id="delete-selection-reason" className="w-full text-xs text-muted-foreground">{reason}</p>}
       </div>}
       {feedback && <p role="status" className="text-sm">{feedback}</p>}
-      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-700 dark:text-red-300">{error}</p>}
     </div>
     {visibleMessages.map(message => <div key={message.id} className={selectedIds.has(message.id) ? "rounded-lg bg-primary/10 ring-2 ring-primary p-2" : "p-2"}>
       {selecting && <label className="mb-2 inline-flex items-center gap-2 rounded-md px-2 py-1 text-xs">

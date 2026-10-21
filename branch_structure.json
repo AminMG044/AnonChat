@@ -1,0 +1,24 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "issue-288-bulk-messages",
+    "main",
+    "origin",
+    "review/288-screenshots",
+    "validate/288-bulk-messages"
+  ],
+  "parent": {
+    "issue-288-bulk-messages": "main",
+    "main": null,
+    "origin": "main",
+    "review/288-screenshots": "main",
+    "validate/288-bulk-messages": "main"
+  },
+  "order": [
+    "main",
+    "issue-288-bulk-messages",
+    "origin",
+    "review/288-screenshots",
+    "validate/288-bulk-messages"
+  ]
+}
